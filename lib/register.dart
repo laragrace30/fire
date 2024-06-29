@@ -3,20 +3,20 @@ import 'package:firebase/text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function()? onTap;
-  const Login({super.key, required this.onTap});
+  const Register({super.key, required this.onTap});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
+  final confirmpasswordController = TextEditingController();
 
-  void signUserIn() async {
+  void signUserUp() async {
     showDialog(
         context: context,
         builder: (context) {
@@ -25,9 +25,12 @@ class _LoginState extends State<Login> {
           );
         });
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
-      Navigator.pop(context);
+      if (passwordController.text == confirmpasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text);
+      } else {
+        wrongPassMessage();
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user not found') {
         wrongEmailMessage();
@@ -76,6 +79,25 @@ class _LoginState extends State<Login> {
         });
   }
 
+  void wrongPassMessage() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            backgroundColor: Colors.grey,
+            title: Center(
+              child: Text(
+                'Password does not match',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,10 +107,10 @@ class _LoginState extends State<Login> {
           child: Center(
             child: Column(children: [
               // LOGO
-              const SizedBox(height: 55),
+              const SizedBox(height: 15),
 
               SizedBox(
-                height: 270.0,
+                height: 170.0,
                 child: Image.asset(
                   'assets/images/logo.png',
                 ),
@@ -117,7 +139,7 @@ class _LoginState extends State<Login> {
                 ],
               ),
 
-              const SizedBox(height: 23),
+              const SizedBox(height: 15),
 
               // PASSWORD
               Column(
@@ -131,8 +153,8 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 8.0),
                   TextFields(
-                    controller: passwordController,
-                    hintText: 'Enter your passwordda',
+                    controller: confirmpasswordController,
+                    hintText: 'Enter your password',
                     obscureText: true,
                     prefixIcon:
                         const AssetImage('assets/images/vectorPassword.png'),
@@ -140,19 +162,41 @@ class _LoginState extends State<Login> {
                 ],
               ),
 
-              const SizedBox(height: 45),
+              const SizedBox(height: 15),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50.0),
+                    child: Text('Confirm Password',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500)),
+                  ),
+                  const SizedBox(height: 8.0),
+                  TextFields(
+                    controller: passwordController,
+                    hintText: 'Enter your password',
+                    obscureText: true,
+                    prefixIcon:
+                        const AssetImage('assets/images/vectorPassword.png'),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 55),
 
               //LOGIN BUTTON
               Button(
-                onTap: signUserIn,
-                buttonText: "Login",
+                onTap: signUserUp,
+                buttonText: "Register",
               ),
 
               const SizedBox(height: 15),
 
               GestureDetector(
                 onTap: widget.onTap,
-                child: const Text('Create an account',
+                child: const Text('have an account? Login',
                     style: TextStyle(
                         fontWeight: FontWeight.w200,
                         fontSize: 14,
