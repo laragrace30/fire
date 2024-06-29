@@ -1,12 +1,13 @@
-plugins {
-    id "com.android.application"
+
+    apply plugin: 'com.android.application'
     // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
+    apply plugin: 'com.google.gms.google-services'
     // END: FlutterFire Configuration
-    id "kotlin-android"
+    apply plugin: 'kotlin-android'
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "dev.flutter.flutter-gradle-plugin"
-}
+    apply plugin: 'dev.flutter.flutter-gradle-plugin'
+    //id 'kotlin-kapt'
+
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
@@ -54,16 +55,39 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+
+    //  kotlinOptions {
+    //     jvmTarget = '11'
+    // }
 }
 
 dependencies {
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.7.10"))
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'com.google.firebase:firebase-auth:21.0.1'
-    implementation 'com.google.firebase:firebase-firestore:24.0.1'
-    implementation platform('com.google.firebase:firebase-bom:31.0.0')
+    implementation platform("org.jetbrains.kotlin:kotlin-bom:$kotlin_version")
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
+    // implementation 'com.google.firebase:firebase-auth:23.0.0'
+    // implementation 'com.google.firebase:firebase-core:21.0.0'
+    implementation platform('com.google.firebase:firebase-bom:33.1.1')
+    implementation('org.jetbrains.kotlin:kotlin-stdlib:1.7.10') {
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+    }
+    
+  }
 
-}
+// configurations.all {
+//     resolutionStrategy {
+//         force 'org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version'
+//     }
+// }
+// configurations.all {
+//     resolutionStrategy {
+//         force "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//         force "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+//         force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//         force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+//     }
+// }
+
+
 
 flutter {
     source = "../.."

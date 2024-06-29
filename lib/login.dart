@@ -27,7 +27,7 @@ class Login extends StatelessWidget {
               SizedBox(
                 height: 270.0,
                 child: Image.asset(
-                  'assets/images/logoWname.png',
+                  'assets/images/logo.png',
                 ),
               ),
 
@@ -37,7 +37,15 @@ class Login extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Email'),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50.0),
+                    child: Text('Email',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500
+                    )
+                    ),
+                  ),
                   const SizedBox(height: 8.0),
                   TextFields(
                     controller: usernameController,
@@ -55,7 +63,15 @@ class Login extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Password'),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50.0),
+                    child: Text('Password',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500
+                    )
+                    ),
+                  ),
                   const SizedBox(height: 8.0),
                   TextFields(
                     controller: passwordController,
